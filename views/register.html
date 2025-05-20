@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form id="registerForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <br>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required>
+        <br>
+        <label for="nombre_usuario">Nombre de usuario:</label>
+        <input type="text" id="nombre_usuario" name="nombre_usuario" required>
+        <br>
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña" required>
+        <label for="confirmar_contraseña">Confirma tu contraseña:</label>
+        <input type="password" id="confirmar_contraseña" name="confirmar_contraseña" required>
+        <br>
+        <label for="rol">Rol:</label>
+        <select id="rol" name="rol" required>
+            <option value="">Selecciona un rol</option>
+            <option value="cliente">Cliente</option>
+            <option value="profesional">Profesional</option>
+        </select>
+        <br>
+        <button type="submit">Registrarse</button>
+    </form>
+
+    <h2>¿Ya tienes una cuenta?</h2>
+    <p><a href="/login">Inicia sesión aquí</a></p>
+    <script src="/register.js"></script>
+</body>
+</html>

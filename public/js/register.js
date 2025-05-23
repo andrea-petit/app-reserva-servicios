@@ -8,7 +8,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         nombre_usuario: form.nombre_usuario.value,
         contraseña: form.contraseña.value,
         confirmar_contraseña: form.confirmar_contraseña.value,
-        rol: form.rol.value
+        rol: form.rol.value,
+        categoria: form.rol.value === 'profesional' ? form.categoria.value : null
     };
 
     try {
@@ -21,10 +22,10 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         const result = await response.json();
 
         if (response.ok) {
-            alert(result.mensaje); 
-            window.location.href = './login'; 
+            alert(result.mensaje || 'Registro exitoso');
+            window.location.href = '/login';
         } else {
-            alert(result.error);
+            alert(result.error || 'Error en el registro');
         }
     } catch (err) {
         alert('Error de conexión con el servidor');
@@ -34,12 +35,16 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 document.addEventListener('DOMContentLoaded', function() {
     const rolSelect = document.getElementById('rol');
     const categoriasDiv = document.getElementById('CategoriasDiv');
+    const categoriaSelect = document.getElementById('categoria');
 
     rolSelect.addEventListener('change', function() {
         if (rolSelect.value === 'profesional') {
             categoriasDiv.style.display = 'block';
+            categoriaSelect.setAttribute('required', 'required');
         } else {
             categoriasDiv.style.display = 'none';
+            categoriaSelect.removeAttribute('required');
+            categoriaSelect.selectedIndex = 0;
         }
     });
 });

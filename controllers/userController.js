@@ -28,7 +28,13 @@ const userController = {
             const { nombre_usuario, contraseña } = req.body;
             const user = await userModel.loginUser(nombre_usuario, contraseña);
             if (user) {
-                res.status(200).json(user);
+                req.session.user = {
+                id: user.id,
+                name: user.nombre,
+                role: user.rol,
+            };
+            res.json({ message: 'Login exitoso', user: req.session.user });
+            
             } else {
                 res.status(401).json({ error: 'Datos inválidos' });
             }

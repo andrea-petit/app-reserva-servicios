@@ -17,7 +17,17 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const result = await response.json();
 
         if (response.ok) {
-            window.location.href = '/home'; 
+            if (result.rol === 'profesional') {
+                alert('¡Bienvenido profesional!')
+                window.location.href = '/home/profesional';
+            }
+            else if (result.rol === 'cliente') {
+                alert('¡Bienvenido cliente!')
+                window.location.href = '/home/cliente';
+            } else {
+                alert('Rol no reconocido');
+            }
+            
         } else {
             alert(result.error);
         }

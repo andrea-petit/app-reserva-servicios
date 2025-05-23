@@ -1,13 +1,11 @@
-//Conexion con base de datos SQLITE
-
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const dbPath = path.join(__dirname, 'database.db');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('Error opening database ' + err.message);
+        console.error('Error abriendo la base de datos ' + err.message);
     } else {
-        console.log('Connected to the SQLite database.');
+        console.log('Conectado exitosamente a la base SQLite.');
     }
 });
 
@@ -25,6 +23,10 @@ db.serialize(() => {
         id_categoria INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL UNIQUE
     )`);
+
+    db.run(`INSERT OR IGNORE INTO Categorias (nombre) VALUES ('Doctor')`);
+    db.run(`INSERT OR IGNORE INTO Categorias (nombre) VALUES ('Abogado')`);
+    db.run(`INSERT OR IGNORE INTO Categorias (nombre) VALUES ('Terapeuta')`);
 
     db.run(`CREATE TABLE IF NOT EXISTS ProfesionalCategorias (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

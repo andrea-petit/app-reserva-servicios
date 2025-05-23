@@ -25,3 +25,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         alert('Error de conexión con el servidor');
     }
 });
+
+document.getElementById('mostrarContrasena').addEventListener('change', function() {
+    const passInput = document.querySelector('input[name="contraseña"]');
+    passInput.type = this.checked ? 'text' : 'password';
+});

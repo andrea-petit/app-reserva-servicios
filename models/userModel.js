@@ -1,29 +1,35 @@
 const db = require('../database/db');
 
 const UserModel = {
+    
     registerUser: (userData) => {
         return new Promise((resolve, reject) => {
-            const { nombre, apellido, nombre_usuario, contraseña, rol } = userData;
+            const { nombre, apellido, nombre_usuario, contraseña, rol, categoria } = userData;
+
             
-            const checkSql = `SELECT * FROM Usuarios WHERE nombre_usuario = ?`;
+            const sqlUser = `INSERT INTO Usuarios (nombre, apellido, nombre_usuario, contraseña, rol) VALUES (?, ?, ?, ?, ?)`;
+            db.run(sqlUser, [nombre, apellido, nombre_usuario, contraseña, rol], function (err) {
+                if (err) return reject(err);
 
-            db.get(checkSql, [nombre_usuario], (err, row) => {
-                if (err) {
+                const id_usuario = this.lastID;
 
-                    reject(err);
-                } else if (row) {
+                
+                if (rol === 'profesional' && categoria) {
+                    db.get(`SELECT id_categoria FROM Categorias WHERE nombre = ?`, [categoria], (err, row) => {
+                        if (err) return reject(err);
+                        if (!row) return reject(new Error('Categoría no encontrada'));
 
-                    reject(new Error('El nombre de usuario ya está en uso.'));
-                } else {
-
-                    const sql = `INSERT INTO Usuarios (nombre, apellido, nombre_usuario, contraseña, rol) VALUES (?, ?, ?, ?, ?)`;
-                    db.run(sql, [nombre, apellido, nombre_usuario, contraseña, rol], function (err) {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve({ id_usuario: this.lastID });
-                        }
+                        db.run(
+                            `INSERT INTO ProfesionalCategorias (id_usuario, id_categoria) VALUES (?, ?)`,
+                            [id_usuario, row.id_categoria],
+                            function (err) {
+                                if (err) return reject(err);
+                                resolve({ id_usuario });
+                            }
+                        );
                     });
+                } else {
+                    resolve({ id_usuario });
                 }
             });
         });
@@ -43,8 +49,7 @@ const UserModel = {
             });
         });
     },
-
-}
+};
 
 module.exports = UserModel;
 

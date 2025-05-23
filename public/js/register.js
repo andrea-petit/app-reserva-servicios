@@ -31,4 +31,16 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const rolSelect = document.getElementById('rol');
+    const categoriasDiv = document.getElementById('CategoriasDiv');
+
+    rolSelect.addEventListener('change', function() {
+        if (rolSelect.value === 'profesional') {
+            categoriasDiv.style.display = 'block';
+        } else {
+            categoriasDiv.style.display = 'none';
+        }
+    });
+});
 

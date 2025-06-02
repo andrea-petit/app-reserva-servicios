@@ -17,11 +17,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const result = await response.json();
 
         if (response.ok) {
-            if (result.rol === 'profesional') {
+            const rol = result.user.rol;
+            if (rol === 'profesional') {
                 alert('¡Bienvenido profesional!')
                 window.location.href = '/home/profesional';
             }
-            else if (result.rol === 'cliente') {
+            else if (rol === 'cliente') {
                 alert('¡Bienvenido cliente!')
                 window.location.href = '/home/cliente';
             } else {
@@ -38,5 +39,9 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
 document.getElementById('mostrarContrasena').addEventListener('change', function() {
     const passInput = document.querySelector('input[name="contraseña"]');
-    passInput.type = this.checked ? 'text' : 'password';
+    if (this.checked) {
+        passInput.type = 'text';
+    } else {
+        passInput.type = 'password';
+    }
 });

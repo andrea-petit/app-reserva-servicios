@@ -39,6 +39,7 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS PerfilProfesional (
         id_perfil INTEGER PRIMARY KEY AUTOINCREMENT,
         id_usuario INTEGER,
+        num_telefono TEXT,
         descripcion TEXT,
         ubicacion TEXT,
         FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario)

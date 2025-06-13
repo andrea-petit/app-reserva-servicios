@@ -20,10 +20,43 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         });
 
         const result = await response.json();
+        console.log(result);
 
         if (response.ok) {
             alert(result.mensaje || 'Registro exitoso');
-            window.location.href = '/login';
+            document.getElementById('registerForm').style.display = 'none';
+            mostrarFormularioPerfilProfesional(true);
+
+            document.getElementById('perfil-profesional-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const perfilData = {
+                    id_usuario: result.user.id_usuario,
+                    num_telefono: e.target.num_telefono.value,
+                    descripcion: e.target.descripcion.value,
+                    ubicacion: e.target.ubicacion.value
+                };
+                console.log(perfilData);
+
+                try {
+                    const perfilResponse = await fetch('/api/perfil-profesional/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(perfilData)
+                    });
+
+                    const perfilResult = await perfilResponse.json();
+
+                    if (perfilResponse.ok) {
+                        alert('Perfil profesional creado exitosamente');
+                        mostrarFormularioPerfilProfesional(true);
+                        window.location.href = '/login';
+                    } else {
+                        alert(perfilResult.error || 'Error al crear el perfil profesional');
+                    }
+                } catch (err) {
+                    alert('Error de conexión con el servidor');
+                }
+            });
         } else {
             alert(result.error || 'Error en el registro');
         }
@@ -31,6 +64,19 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         alert('Error de conexión con el servidor');
     }
 });
+
+
+function mostrarFormularioPerfilProfesional(mostrar) {
+    const form = document.getElementById('perfil-profesional-form');
+    const requiredFields = form.querySelectorAll('[required]');
+    if (mostrar) {
+        form.style.display = 'block';
+        requiredFields.forEach(field => field.setAttribute('required', 'required'));
+    } else {
+        form.style.display = 'none';
+        requiredFields.forEach(field => field.removeAttribute('required'));
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const rolSelect = document.getElementById('rol');
@@ -47,5 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
             categoriaSelect.selectedIndex = 0;
         }
     });
+
+    
+    mostrarFormularioPerfilProfesional(false);
 });
 

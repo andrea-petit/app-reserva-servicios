@@ -29,9 +29,9 @@ const userController = {
             const user = await userModel.loginUser(nombre_usuario, contraseña);
             if (user) {
                 req.session.user = {
-                id: user.id,
+                id: user.id_usuario,
                 name: user.nombre,
-                role: user.rol,
+                rol: user.rol,
             };
             res.json({ message: 'Login exitoso', user: req.session.user });
             

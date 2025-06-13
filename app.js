@@ -6,6 +6,7 @@ const session = require("express-session");
 const autenticacion = require("./middlewares/auth");
 
 const userRoutes = require("./routes/userRoutes");
+const perfilProfesionalRoutes = require("./routes/perfilProfesionalRoutes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +42,19 @@ app.get("/home/cliente", autenticacion, (req, res) => {
   res.sendFile(path.join(__dirname, "views", "indexCliente.html"));
 });
 
+app.use("/api/perfil-profesional", perfilProfesionalRoutes);
 
+app.get("/perfil-profesional", autenticacion, (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "indexProfesional.html"));
+});
+
+app.get('/api/usuario-actual', autenticacion, (req, res) => {
+  if (req.session && req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.status(401).json({ error: 'No autenticado' });
+  }
+});
 
 
 app.listen(3000, () => {
